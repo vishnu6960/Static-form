@@ -3,369 +3,221 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Bearings — Find your bearings in life, work &amp; money</title>
+<title>Evergreen — Field notes on career, wealth &amp; habits</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500&family=Work+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
 <style>
-  /* ==========================================================
-     MOBILE-FIRST STYLESHEET
-     Base rules below = the phone layout (default, no query needed).
-     Breakpoints layer on top as screens grow:
-       --bp-sm: 560px  (large phone / small tablet: minor spacing/type bumps)
-       --bp-md: 760px  (tablet: 2-col grids return, calc rows widen)
-       --bp-lg: 980px  (desktop: persistent sidebar + ad rail, 3-col shell)
-     Nothing here is disabled by later queries — each breakpoint only adds.
-     ========================================================== */
   :root{
-    --navy:#12233B;
-    --navy-2:#1B3358;
-    --navy-3:#233F66;
-    --brass:#C08B2C;
-    --brass-light:#E3B85E;
-    --sea:#2F6F5E;
-    --sea-light:#E4F0EC;
-    --coral:#B23A48;
-    --coral-light:#F6E6E7;
-    --cream:#F6F3EC;
-    --paper:#FCFBF8;
-    --ink:#1B2430;
-    --ink-soft:#5B6472;
-    --line:#E4DFD3;
-    --radius:10px;
-    --nav-h:58px;
+    /* Brand (safe as identity color — never used to encode a comparison) */
+    --forest:#16302A;
+    --forest-2:#1F4038;
+    --moss:#3E6259;
+    --sand:#FBF6EC;
+    --paper:#FFFFFF;
+    --ink:#211C15;
+    --ink-soft:#5B5749;
+    --line:#E5DFCB;
+
+    /* Okabe–Ito colorblind-safe accent pair — distinguishable across
+       protanopia, deuteranopia, tritanopia and full monochromacy */
+    --safe-blue:#0072B2;    /* used for: affirm / "Do" / primary action */
+    --safe-vermillion:#D55E00; /* used for: caution / "Don't" */
+    --safe-amber:#E69F00;   /* used for: highlight / eyebrow, never opposite blue */
+    --safe-blue-bg:#E4F0F8;
+    --safe-vermillion-bg:#FAEBE0;
+    --safe-amber-bg:#FCF1DC;
+
+    --radius:14px;
+    --focus:3px solid #E69F00;
   }
   *{box-sizing:border-box;}
-  html{-webkit-text-size-adjust:100%;}
   html,body{margin:0;padding:0;}
   body{
-    background:var(--cream);
+    background:var(--sand);
     color:var(--ink);
-    font-family:'Inter',sans-serif;
+    font-family:'Work Sans',sans-serif;
     -webkit-font-smoothing:antialiased;
-    font-size:15px;
   }
   #root{min-height:100vh;}
-  h1,h2,h3,.display{
-    font-family:'Fraunces',serif;
-    letter-spacing:-0.01em;
-  }
-  .mono{font-family:'JetBrains Mono',monospace;}
+  h1,h2,h3,.display{font-family:'Newsreader',serif;letter-spacing:-0.01em;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
   a{color:inherit;}
   button{font-family:inherit;cursor:pointer;}
-  input,button{font-size:16px;} /* prevents iOS auto-zoom on focus */
-  ::selection{background:var(--brass-light);color:var(--navy);}
-  img,svg{max-width:100%;}
+  ::selection{background:var(--safe-amber-bg);color:var(--forest);}
+  :focus-visible{outline:var(--focus);outline-offset:2px;border-radius:4px;}
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;} }
 
-  /* ---------- Top Nav (mobile base: logo + hamburger only) ---------- */
-  .topnav{
-    position:sticky;top:0;z-index:50;
-    background:var(--navy);
-    color:#fff;
-    border-bottom:3px solid var(--brass);
+  /* ---------------- Top nav ---------------- */
+  .topnav{position:sticky;top:0;z-index:60;background:var(--paper);border-bottom:1px solid var(--line);}
+  .topnav-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:22px;padding:0 24px;height:68px;}
+  .brand{display:flex;align-items:center;gap:11px;flex-shrink:0;}
+  .brand-name{font-family:'Newsreader',serif;font-weight:600;font-size:21px;color:var(--forest);}
+  .brand-tag{font-size:10.5px;color:var(--moss);text-transform:uppercase;letter-spacing:0.13em;font-weight:600;display:block;margin-top:1px;font-family:'Work Sans',sans-serif;}
+  .nav-search{flex:1;max-width:360px;display:flex;align-items:center;background:var(--sand);border:1.5px solid var(--line);border-radius:24px;padding:0 14px;height:40px;}
+  .nav-search input{background:transparent;border:none;outline:none;color:var(--ink);font-size:14px;width:100%;padding-left:8px;font-family:'Work Sans',sans-serif;}
+  .nav-search input::placeholder{color:var(--ink-soft);}
+  .nav-search svg{flex-shrink:0;color:var(--ink-soft);}
+  .index-btn{
+    margin-left:auto;display:flex;align-items:center;gap:8px;
+    background:var(--forest);color:#fff;border:none;border-radius:24px;
+    padding:10px 18px;font-size:13.5px;font-weight:700;flex-shrink:0;
   }
-  .topnav-inner{
-    max-width:1440px;margin:0 auto;
-    display:flex;align-items:center;gap:12px;
-    padding:0 14px;height:var(--nav-h);
-  }
-  .brand{display:flex;align-items:center;gap:9px;flex-shrink:0;min-width:0;}
-  .brand-mark{width:26px;height:26px;flex-shrink:0;}
-  .brand-name{
-    font-family:'Fraunces',serif;font-weight:600;font-size:17px;
-    letter-spacing:-0.01em;white-space:nowrap;
-  }
-  .brand-tag{
-    font-size:9.5px;color:var(--brass-light);
-    text-transform:uppercase;letter-spacing:0.12em;
-    margin-top:0;display:none;font-family:'Inter',sans-serif;font-weight:600;
-  }
-  /* full search bar hidden on mobile nav — lives inside the drawer instead */
-  .nav-search{display:none;}
-  .nav-links{display:none;}
-  .hamburger{
-    display:flex;align-items:center;justify-content:center;
-    margin-left:auto;background:none;border:1px solid rgba(255,255,255,0.28);
-    border-radius:8px;width:42px;height:42px;color:#fff;flex-shrink:0;
-  }
+  .index-btn:hover{background:var(--forest-2);}
 
-  /* ---------- Shell layout (mobile base: single stacked column) ---------- */
-  .shell{
-    max-width:1440px;margin:0 auto;
-    display:flex;flex-direction:column;
+  /* pill tabs */
+  .pillbar{max-width:1280px;margin:0 auto;padding:16px 24px 0;display:flex;gap:10px;flex-wrap:wrap;}
+  .pill{
+    display:flex;align-items:center;gap:8px;
+    border:1.5px solid var(--line);background:var(--paper);color:var(--ink-soft);
+    border-radius:24px;padding:8px 16px 8px 12px;font-size:13.5px;font-weight:600;
   }
-  /* left nav is an off-canvas drawer on mobile by default */
-  .col-left{
-    position:fixed;left:0;top:var(--nav-h);bottom:0;width:min(82vw,300px);z-index:70;
-    overflow-y:auto;-webkit-overflow-scrolling:touch;
-    border-right:1px solid var(--line);
-    background:var(--paper);
-    padding:16px 0 40px;
-    transform:translateX(-100%);
-    transition:transform .22s ease;
-    box-shadow:2px 0 24px rgba(0,0,0,0.18);
-  }
-  .col-left.open{transform:translateX(0);}
-  .col-main{
-    min-width:0;order:1;
-    padding:18px 16px 40px;
-    background:var(--cream);
-  }
-  .col-right{
-    order:2;
-    padding:4px 16px 30px;
-  }
+  .pill svg{flex-shrink:0;}
+  .pill.active{background:var(--forest);border-color:var(--forest);color:#fff;}
+  .pill.active svg{color:#fff;}
 
-  /* ---------- Left sidebar ---------- */
-  .side-search{
-    display:block;
-    margin:0 16px 14px;
+  /* ---------------- Index drawer ---------------- */
+  .drawer-backdrop{position:fixed;inset:0;background:rgba(22,48,42,0.45);z-index:100;display:flex;justify-content:flex-end;}
+  .drawer{width:min(420px,92vw);height:100%;background:var(--paper);box-shadow:-8px 0 30px rgba(0,0,0,0.15);padding:26px 24px;overflow-y:auto;}
+  .drawer-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+  .drawer-head h2{font-size:22px;color:var(--forest);margin:0;}
+  .drawer-close{background:var(--sand);border:1px solid var(--line);border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--ink);}
+  .drawer-search{display:flex;align-items:center;gap:8px;background:var(--sand);border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;margin-bottom:18px;}
+  .drawer-search input{border:none;background:none;outline:none;font-size:14px;width:100%;color:var(--ink);}
+  .drawer-group{margin-bottom:18px;}
+  .drawer-group-title{display:flex;align-items:center;gap:7px;font-size:11.5px;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;color:var(--moss);margin-bottom:8px;}
+  .drawer-item{
+    display:block;width:100%;text-align:left;background:none;border:none;
+    padding:10px 10px;border-radius:8px;font-size:14.5px;color:var(--ink);
+    border-bottom:1px solid var(--line);
   }
-  .cat-block{margin-bottom:4px;}
-  .cat-head{
-    width:100%;display:flex;align-items:center;gap:10px;
-    background:none;border:none;text-align:left;
-    padding:12px 16px;font-size:13px;font-weight:700;min-height:46px;
-    color:var(--navy);text-transform:uppercase;letter-spacing:0.05em;
-  }
-  .cat-bearing{
-    font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:600;
-    color:var(--brass);background:#FBF1DD;border:1px solid #EBD6A4;
-    padding:2px 6px;border-radius:20px;flex-shrink:0;
-  }
-  .cat-chevron{margin-left:auto;color:var(--ink-soft);transition:transform .15s;}
-  .cat-chevron.open{transform:rotate(90deg);}
-  .topic-list{list-style:none;margin:0;padding:0 8px 10px 8px;}
-  .topic-item button{
-    width:100%;text-align:left;background:none;border:none;
-    padding:11px 12px 11px 30px;font-size:13.5px;color:var(--ink-soft);
-    border-radius:6px;border-left:2px solid transparent;min-height:44px;
-    line-height:1.35;
-  }
-  .topic-item button:hover{background:var(--sea-light);color:var(--navy);}
-  .topic-item button.active{
-    background:var(--navy);color:#fff;font-weight:600;
-    border-left:2px solid var(--brass);
-  }
-  .side-divider{height:1px;background:var(--line);margin:8px 16px;}
-  .home-link{
-    display:block;margin:0 16px 14px;padding:12px 12px;min-height:44px;
-    background:var(--navy);color:#fff;border-radius:8px;
-    font-size:13px;font-weight:700;text-align:center;
-    text-transform:uppercase;letter-spacing:0.04em;
-  }
+  .drawer-item:hover{background:var(--sand);}
 
-  /* ---------- Right rail (ads) — stacked, static on mobile ---------- */
-  .ad-slot{
-    border:1.5px dashed #C9C2AE;
-    border-radius:var(--radius);
-    background:repeating-linear-gradient(135deg,#F1EDE1,#F1EDE1 10px,#EDE8D9 10px,#EDE8D9 20px);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    text-align:center;color:#9C9482;padding:22px 14px;margin-bottom:16px;
-    min-height:100px;
-  }
-  .ad-slot .ad-label{
-    font-size:10px;text-transform:uppercase;letter-spacing:0.14em;
-    font-weight:700;color:#A79A73;margin-bottom:6px;
-  }
-  .ad-slot .ad-size{font-size:11.5px;color:#B0A78C;}
-  .rail-note{
-    font-size:12px;color:var(--ink-soft);line-height:1.6;
-    background:var(--paper);border:1px solid var(--line);
-    border-radius:var(--radius);padding:14px;margin-bottom:16px;
-  }
-  .rail-note b{color:var(--navy);}
+  /* ---------------- Shell ---------------- */
+  .shell{max-width:1280px;margin:0 auto;padding:0 24px;}
 
-  /* ---------- Main content ---------- */
-  .crumb{font-size:12px;color:var(--ink-soft);margin-bottom:12px;}
-  .crumb b{color:var(--navy);}
-  .eyebrow{
-    display:inline-flex;align-items:center;gap:8px;
-    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;
-    color:var(--brass);text-transform:uppercase;letter-spacing:0.1em;
-    margin-bottom:10px;
-  }
-  .eyebrow .dot{width:5px;height:5px;border-radius:50%;background:var(--brass);flex-shrink:0;}
-  .page-title{font-size:25px;font-weight:600;color:var(--navy);margin:0 0 10px;line-height:1.18;}
-  .page-summary{font-size:15px;color:var(--ink-soft);line-height:1.6;max-width:760px;margin:0 0 22px;}
+  /* ---------------- Hero ---------------- */
+  .hero{display:grid;grid-template-columns:1.1fr 0.9fr;gap:40px;align-items:center;padding:44px 0 30px;}
+  .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--safe-amber-bg);color:#8A6300;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px;}
+  .hero h1{font-size:40px;line-height:1.15;color:var(--forest);font-weight:600;margin:0 0 16px;max-width:560px;}
+  .hero p{font-size:16px;color:var(--ink-soft);line-height:1.7;max-width:480px;margin:0 0 22px;}
+  .hero-stats{display:flex;gap:26px;flex-wrap:wrap;}
+  .hero-stat .n{font-family:'Newsreader',serif;font-size:24px;font-weight:600;color:var(--forest);}
+  .hero-stat .l{font-size:11.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.06em;margin-top:2px;}
+  .hero-visual{display:flex;align-items:center;justify-content:center;}
 
-  .stat-row{display:flex;flex-direction:column;gap:10px;margin-bottom:24px;}
-  .stat-card{
-    background:var(--navy);color:#fff;border-radius:var(--radius);
-    padding:14px 16px;
+  /* ---------------- Category grid ---------------- */
+  .grid-head{display:flex;align-items:baseline;justify-content:space-between;margin:34px 0 16px;}
+  .grid-head h2{font-size:22px;color:var(--forest);margin:0;}
+  .grid-head span{font-size:13px;color:var(--ink-soft);}
+  .topic-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-bottom:50px;}
+  .topic-card{
+    background:var(--paper);border:1.5px solid var(--line);border-radius:var(--radius);
+    padding:22px 24px;cursor:pointer;transition:box-shadow .15s, border-color .15s, transform .15s;
   }
-  .stat-card .val{font-family:'Fraunces',serif;font-size:22px;font-weight:600;color:var(--brass-light);}
-  .stat-card .lbl{font-size:12px;color:rgba(255,255,255,0.72);margin-top:4px;line-height:1.4;}
+  .topic-card:hover{border-color:var(--moss);box-shadow:0 8px 24px rgba(22,48,42,0.08);transform:translateY(-2px);}
+  .topic-card-top{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+  .cat-chip{
+    display:flex;align-items:center;gap:6px;background:var(--sand);border:1px solid var(--line);
+    border-radius:16px;padding:4px 10px 4px 8px;font-size:11px;font-weight:700;color:var(--moss);
+    text-transform:uppercase;letter-spacing:0.05em;
+  }
+  .field-note-no{margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);}
+  .topic-card h3{font-size:19px;color:var(--forest);margin:0 0 8px;font-weight:600;}
+  .topic-card p{font-size:13.5px;color:var(--ink-soft);line-height:1.55;margin:0 0 12px;}
+  .topic-card-foot{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--safe-blue);font-weight:700;}
 
-  .dodont{display:flex;flex-direction:column;gap:14px;margin-bottom:26px;}
-  .dd-card{border-radius:var(--radius);padding:16px 17px;}
-  .dd-card.do{background:var(--sea-light);border:1px solid #C9E1D6;}
-  .dd-card.dont{background:var(--coral-light);border:1px solid #E9C7CB;}
-  .dd-title{
-    font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:0.07em;
-    margin-bottom:9px;display:flex;align-items:center;gap:7px;
+  /* ---------------- Topic detail: two-column editorial ---------------- */
+  .detail-shell{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:44px;padding:30px 0 70px;align-items:start;}
+  .crumb{font-size:12.5px;color:var(--ink-soft);margin-bottom:16px;}
+  .crumb button{background:none;border:none;color:var(--safe-blue);font-weight:600;font-size:12.5px;padding:0;}
+  .fn-eyebrow{
+    display:inline-flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;font-weight:600;color:var(--moss);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px;
   }
-  .dd-card.do .dd-title{color:var(--sea);}
-  .dd-card.dont .dd-title{color:var(--coral);}
+  .article-title{font-size:33px;font-weight:600;color:var(--forest);margin:0 0 14px;line-height:1.18;}
+  .article-summary{font-size:16.5px;color:var(--ink-soft);line-height:1.68;margin:0 0 28px;}
+
+  .stat-strip{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:30px;}
+  .stat-pill{
+    flex:1;min-width:150px;background:var(--paper);border:1.5px solid var(--line);border-radius:12px;
+    padding:16px 18px;display:flex;align-items:center;gap:12px;
+  }
+  .stat-pill .ico{width:34px;height:34px;border-radius:9px;background:var(--sand);display:flex;align-items:center;justify-content:center;color:var(--forest);flex-shrink:0;}
+  .stat-pill .val{font-family:'Newsreader',serif;font-size:19px;font-weight:600;color:var(--forest);line-height:1.1;}
+  .stat-pill .lbl{font-size:11.5px;color:var(--ink-soft);margin-top:2px;line-height:1.35;}
+
+  /* Do/Don't — redundant coding: shape + icon + color + label, never color alone */
+  .dodont{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:32px;}
+  .dd-card{border-radius:var(--radius);padding:19px 21px;border-width:2px;border-style:solid;}
+  .dd-card.do{background:var(--safe-blue-bg);border-color:#B7D6E9;}
+  .dd-card.dont{background:var(--safe-vermillion-bg);border-color:#EFC7A8;}
+  .dd-title{display:flex;align-items:center;gap:9px;font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;}
+  .dd-title .badge{width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .dd-card.do .dd-title{color:#00508A;}
+  .dd-card.dont .dd-title{color:#9E4600;}
   .dd-card ul{margin:0;padding:0;list-style:none;}
-  .dd-card li{
-    font-size:13.6px;line-height:1.55;padding:6px 0 6px 20px;position:relative;color:var(--ink);
-  }
-  .dd-card.do li:before{content:"✓";position:absolute;left:0;color:var(--sea);font-weight:700;}
-  .dd-card.dont li:before{content:"✕";position:absolute;left:0;color:var(--coral);font-weight:700;}
+  .dd-card li{display:flex;gap:9px;font-size:13.8px;line-height:1.55;padding:6px 0;color:var(--ink);}
+  .dd-card li svg{flex-shrink:0;margin-top:3px;}
 
-  .body-copy{max-width:760px;margin-bottom:6px;}
-  .body-copy h3{font-size:17.5px;color:var(--navy);margin:22px 0 9px;font-weight:600;}
-  .body-copy p{font-size:14.5px;line-height:1.72;color:#333B47;margin:0 0 13px;}
+  .body-copy{max-width:720px;}
+  .body-copy h3{font-size:19px;color:var(--forest);margin:26px 0 10px;font-weight:600;}
+  .body-copy p{font-size:15px;line-height:1.78;color:#31291E;margin:0 0 14px;}
 
   .disclaimer{
-    max-width:760px;font-size:11.5px;color:var(--ink-soft);
-    border-left:3px solid var(--brass);padding:8px 0 8px 13px;margin:18px 0 30px;
-    background:#FBF7EC;line-height:1.6;
+    font-size:12px;color:var(--ink-soft);border-left:3px solid var(--safe-amber);
+    padding:9px 0 9px 14px;margin:24px 0 6px;background:var(--safe-amber-bg);line-height:1.6;border-radius:0 8px 8px 0;
   }
 
-  /* ---------- Calculator ---------- */
-  .calc-wrap{
-    max-width:760px;
-    background:var(--navy);border-radius:14px;padding:20px 18px 22px;
-    margin:8px 0 30px;color:#fff;
+  /* ---------------- Right rail: Toolkit ---------------- */
+  .rail{position:sticky;top:90px;display:flex;flex-direction:column;gap:16px;}
+  .rail-card{background:var(--paper);border:1.5px solid var(--line);border-radius:var(--radius);padding:18px 18px;}
+  .rail-card h4{font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--moss);margin:0 0 10px;font-weight:700;}
+  .related-link{display:block;padding:8px 0;font-size:13.5px;border-bottom:1px solid var(--line);color:var(--forest);font-weight:600;}
+  .related-link:last-child{border-bottom:none;}
+  .ad-slot{
+    border:1.5px dashed #CFC6A8;border-radius:12px;background:repeating-linear-gradient(135deg,#F3EEDD,#F3EEDD 10px,#EFE8D3 10px,#EFE8D3 20px);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#9C9270;padding:22px 12px;
   }
-  .calc-head{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
-  .calc-head .ico{
-    width:28px;height:28px;border-radius:8px;background:var(--brass);
-    display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);
-  }
-  .calc-title{font-family:'Fraunces',serif;font-size:17px;font-weight:600;}
-  .calc-sub{font-size:12px;color:rgba(255,255,255,0.6);margin:2px 0 18px;}
-  .calc-grid{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:20px;}
-  .calc-field label{
-    display:flex;justify-content:space-between;
-    font-size:11.5px;color:rgba(255,255,255,0.75);margin-bottom:8px;
-    text-transform:uppercase;letter-spacing:0.05em;font-weight:600;
-  }
-  .calc-field label span.v{color:var(--brass-light);font-family:'JetBrains Mono',monospace;}
-  .calc-field input[type=range]{
-    width:100%;accent-color:var(--brass);height:28px; /* taller hit area for touch */
-  }
-  .calc-field input[type=number]{
-    width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);
-    border-radius:6px;color:#fff;font-family:'JetBrains Mono',monospace;font-size:15px;
-    padding:10px 10px;outline:none;
-  }
-  .calc-results{
-    display:grid;grid-template-columns:1fr;gap:10px;
-    border-top:1px solid rgba(255,255,255,0.15);padding-top:18px;
-  }
-  .calc-result{background:rgba(255,255,255,0.06);border-radius:8px;padding:13px 14px;}
-  .calc-result .rv{font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;color:var(--brass-light);}
-  .calc-result .rl{font-size:11px;color:rgba(255,255,255,0.65);margin-top:4px;text-transform:uppercase;letter-spacing:0.05em;}
-  .calc-note{font-size:11px;color:rgba(255,255,255,0.5);margin-top:14px;line-height:1.55;}
+  .ad-slot .ad-label{font-size:10px;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;color:#A4996E;margin-bottom:5px;}
+  .ad-slot .ad-size{font-size:11px;color:#B2A783;}
 
-  /* ---------- Homepage ---------- */
-  .hero{
-    background:linear-gradient(135deg,var(--navy),var(--navy-2) 60%, var(--navy-3));
-    border-radius:14px;padding:28px 22px;color:#fff;margin-bottom:26px;position:relative;overflow:hidden;
-  }
-  .hero:before{
-    content:"";position:absolute;right:-60px;top:-60px;width:200px;height:200px;
-    border:1.5px solid rgba(224,184,94,0.25);border-radius:50%;
-  }
-  .hero:after{
-    content:"";position:absolute;right:-10px;top:-10px;width:110px;height:110px;
-    border:1.5px solid rgba(224,184,94,0.3);border-radius:50%;
-  }
-  .hero h1{font-size:26px;line-height:1.22;max-width:600px;font-weight:600;margin:0 0 12px;}
-  .hero p{font-size:14.5px;color:rgba(255,255,255,0.75);max-width:520px;line-height:1.6;margin:0 0 18px;}
-  .hero-badges{display:flex;gap:8px;flex-wrap:wrap;}
-  .hero-badge{
-    font-size:11.5px;font-weight:600;background:rgba(255,255,255,0.1);
-    border:1px solid rgba(255,255,255,0.18);padding:6px 11px;border-radius:20px;
-  }
-  .cat-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-bottom:10px;}
-  .cat-card{
-    background:var(--paper);border:1px solid var(--line);border-radius:12px;
-    padding:18px 19px;transition:border-color .15s, transform .15s;cursor:pointer;
-  }
-  .cat-card:hover{border-color:var(--brass);transform:translateY(-2px);}
-  .cat-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;}
-  .cat-card-title{font-family:'Fraunces',serif;font-size:17px;font-weight:600;color:var(--navy);}
-  .cat-card-desc{font-size:12.5px;color:var(--ink-soft);line-height:1.55;margin-bottom:9px;}
-  .cat-card-count{font-size:11px;color:var(--brass);font-weight:700;text-transform:uppercase;letter-spacing:0.05em;}
+  /* ---------------- Calculator (Toolkit instrument card) ---------------- */
+  .calc-card{background:var(--forest);color:#fff;border-radius:16px;padding:24px 24px 26px;margin:6px 0 34px;}
+  .calc-head{display:flex;align-items:center;gap:11px;margin-bottom:2px;}
+  .calc-ring-mini{flex-shrink:0;}
+  .calc-title{font-family:'Newsreader',serif;font-size:19px;font-weight:600;}
+  .calc-sub{font-size:12.5px;color:rgba(255,255,255,0.62);margin:2px 0 20px;}
+  .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 20px;margin-bottom:22px;}
+  .calc-field label{display:flex;justify-content:space-between;font-size:11.5px;color:rgba(255,255,255,0.75);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em;font-weight:600;}
+  .calc-field label span.v{color:var(--safe-amber);font-family:'IBM Plex Mono',monospace;}
+  .calc-field input[type=range]{width:100%;accent-color:var(--safe-amber);}
+  .calc-body{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:center;}
+  .calc-results{display:flex;flex-direction:column;gap:10px;}
+  .calc-result{background:rgba(255,255,255,0.07);border-radius:9px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;}
+  .calc-result .rv{font-family:'IBM Plex Mono',monospace;font-size:17px;font-weight:700;color:var(--safe-amber);}
+  .calc-result .rl{font-size:11px;color:rgba(255,255,255,0.68);text-transform:uppercase;letter-spacing:0.05em;text-align:right;}
+  .calc-note{font-size:11.5px;color:rgba(255,255,255,0.5);margin-top:16px;line-height:1.55;}
+  .ring-stage{display:flex;align-items:center;justify-content:center;}
 
-  footer{
-    background:var(--navy);color:rgba(255,255,255,0.6);
-    text-align:center;padding:22px 18px;font-size:11.5px;line-height:1.7;
-  }
+  footer{background:var(--forest);color:rgba(255,255,255,0.65);text-align:center;padding:30px 20px;font-size:12px;line-height:1.75;}
   footer b{color:#fff;}
+  .a11y-note{max-width:640px;margin:0 auto 14px;font-size:12px;color:rgba(255,255,255,0.55);}
 
-  /* Dim backdrop behind the open mobile drawer; tapping it closes the drawer (handled in JS) */
-  .drawer-scrim{
-    position:fixed;inset:0;top:var(--nav-h);background:rgba(18,35,59,0.45);z-index:60;
-  }
-
-  /* ===================== sm: 560px+ ===================== */
-  @media (min-width:560px){
-    .stat-row{flex-direction:row;flex-wrap:wrap;}
-    .stat-card{flex:1;min-width:150px;}
-    .page-title{font-size:29px;}
-    .hero h1{font-size:29px;}
-    .calc-results{grid-template-columns:repeat(3,1fr);}
-  }
-
-  /* ===================== md: 760px+ (tablet) ===================== */
-  @media (min-width:760px){
-    :root{--nav-h:64px;}
-    .topnav-inner{padding:0 22px;}
-    .brand-mark{width:30px;height:30px;}
-    .brand-name{font-size:20px;}
-    .brand-tag{display:block;}
-    .col-main{padding:26px 30px 60px;}
-    .col-right{padding:20px 24px 30px;}
-    .dodont{flex-direction:row;}
-    .dodont > *{flex:1;}
-    .calc-grid{grid-template-columns:1fr 1fr;}
-    .cat-grid{grid-template-columns:1fr 1fr;}
-    .hero{padding:36px 34px;}
-    .page-title{font-size:32px;}
-  }
-
-  /* ===================== lg: 980px+ (desktop — full 3-column shell) ===================== */
-  @media (min-width:980px){
-    .shell{
-      display:grid;
-      grid-template-columns:250px minmax(0,1fr) 260px;
-      align-items:start;
-    }
-    .col-left{
-      position:sticky;top:var(--nav-h);left:auto;bottom:auto;width:auto;z-index:1;
-      height:calc(100vh - var(--nav-h));
-      transform:none;box-shadow:none;
-      border-right:1px solid var(--line);
-    }
-    .col-main{order:0;padding:28px 34px 80px;border-right:1px solid var(--line);}
-    .col-right{
-      order:0;position:sticky;top:var(--nav-h);height:calc(100vh - var(--nav-h));
-      overflow-y:auto;padding:20px 16px 40px;
-    }
-    .side-search{display:none;}
-    .home-link{display:none;} /* nav-links in top bar covers this at desktop width */
-    .nav-search{display:flex;flex:1;max-width:420px;}
-    .nav-links{display:flex;gap:4px;margin-left:auto;flex-shrink:0;}
-    .nav-links button{
-      background:none;border:none;color:rgba(255,255,255,0.82);
-      font-size:13.5px;font-weight:600;padding:8px 12px;border-radius:6px;
-      transition:background .15s, color .15s;
-    }
-    .nav-links button:hover{background:rgba(255,255,255,0.1);color:#fff;}
-    .nav-links button.active{background:var(--brass);color:var(--navy);}
-    .hamburger{display:none;}
-    .drawer-scrim{display:none;}
-    .page-title{font-size:34px;}
-    .hero{padding:44px 40px;}
-    .hero h1{font-size:36px;}
+  @media (max-width:960px){
+    .hero{grid-template-columns:1fr;}
+    .hero-visual{order:-1;}
+    .topic-grid{grid-template-columns:1fr;}
+    .detail-shell{grid-template-columns:1fr;}
+    .rail{position:static;}
+    .dodont{grid-template-columns:1fr;}
+    .calc-grid{grid-template-columns:1fr;}
+    .calc-body{grid-template-columns:1fr;}
+    .nav-search{display:none;}
+    .index-btn span.lbl{display:none;}
   }
 </style>
 </head>
@@ -373,729 +225,590 @@
 <div id="root"></div>
 
 <script type="text/babel" data-presets="react">
-const {useState, useMemo, useEffect} = React;
+const {useState, useMemo, useEffect, useRef} = React;
 
 /* ============================ DATA ============================ */
 
 const CATEGORIES = [
-  {
-    id: "career",
-    label: "Career & Work",
-    bearing: "090",
-    desc: "Building, growing and steering a working life you don't dread.",
-  },
-  {
-    id: "invest",
-    label: "Money & Investing",
-    bearing: "045",
-    desc: "How money grows, and the guardrails to keep around it.",
-  },
-  {
-    id: "finance",
-    label: "Personal Finance",
-    bearing: "180",
-    desc: "The plumbing of everyday money — budgets, buffers, debt.",
-  },
-  {
-    id: "life",
-    label: "Life Skills",
-    bearing: "315",
-    desc: "The unglamorous habits that quietly decide most outcomes.",
-  },
+  { id:"career", label:"Career & Work", icon:"briefcase", desc:"Steering a working life deliberately." },
+  { id:"wealth", label:"Wealth & Investing", icon:"sprout", desc:"How money grows, slowly and then suddenly." },
+  { id:"money", label:"Everyday Money", icon:"coins", desc:"The daily plumbing of personal finance." },
+  { id:"habits", label:"Habits & Mindset", icon:"footprints", desc:"Small, repeatable choices that compound." },
 ];
 
 const TOPICS = [
-  // ---------------- CAREER ----------------
   {
-    id: "career-foundation",
-    cat: "career",
-    title: "Building a Career Foundation",
-    summary: "Early career decisions compound the same way money does — the direction matters more than the speed.",
-    stats: [
-      {v:"3-5 yrs", l:"Typical time to build real depth in a domain"},
-      {v:"70%", l:"Of jobs found through networks, not applications alone"},
-      {v:"2x", l:"Career switchers who plan the move outperform impulsive switchers"},
+    id:"career-learn", cat:"career", no:"01",
+    title:"Choosing What to Learn Next",
+    summary:"Not everything worth learning is worth learning right now — sequencing matters more than ambition.",
+    stats:[
+      {v:"1 skill", l:"Depth in one adjacent skill usually beats breadth across five"},
+      {v:"90 days", l:"A realistic window to judge whether a new skill is worth continuing"},
     ],
-    dos: [
-      "Pick a direction and go deep before you go wide — depth is what gets you hired.",
-      "Ask for feedback on your work every few months, not once a year at review time.",
-      "Keep a running record of your wins — you will need it, and memory is unreliable.",
-      "Build one visible skill outside your job description; it becomes your differentiator.",
+    dos:[
+      "Pick skills adjacent to what you're already good at — leverage compounds faster than novelty.",
+      "Set a 90-day checkpoint before committing to a full year of study.",
+      "Learn by building something real, not only by consuming courses.",
     ],
-    donts: [
-      "Don't chase titles over skills — titles without substance stall out fast.",
-      "Don't stay silent about your ambitions; managers can't read minds.",
-      "Don't switch direction every year chasing trends — shallow experience compounds poorly.",
-      "Don't wait for permission to learn something — most growth is self-assigned.",
+    donts:[
+      "Don't learn five unrelated things at once — split focus rarely produces depth in any of them.",
+      "Don't choose only by what's trending — durability matters more than hype.",
+      "Don't wait for a formal course to begin — most skills can start with a small real project today.",
     ],
-    body: [
-      {h:"Direction before speed", p:"Most early-career anxiety comes from comparing your speed to someone else's, on a road you never chose. A slower path in the right direction beats a fast sprint in the wrong one — because skill and reputation compound, and compounding needs time in one place before it needs more effort."},
-      {h:"The two things that actually get noticed", p:"Consistently reliable output, and being easy to work with. Neither is glamorous. Both are rarer than people assume, and both are entirely within your control regardless of the industry."},
+    body:[
+      {h:"Sequencing beats ambition", p:"The question isn't whether a skill is valuable in the abstract — almost everything is, to someone. The question is what compounds fastest with what you already know, because a new skill layered on existing strength gets useful far sooner than one built from zero."},
     ],
   },
   {
-    id: "career-negotiation",
-    cat: "career",
-    title: "Negotiating Pay & Offers",
-    summary: "A single negotiated raise, repeated as a percentage every year after, becomes a very different number by retirement — the calculator below shows why.",
-    stats: [
-      {v:"~5-10%", l:"Typical room available on most initial offers"},
-      {v:"1 in 3", l:"Candidates who never negotiate at all"},
+    id:"career-negotiate", cat:"career", no:"02",
+    title:"Reading the Room Before You Negotiate",
+    summary:"Most negotiation advice focuses on what to say. The bigger lever is usually timing and context — knowing when leverage actually exists.",
+    stats:[
+      {v:"2 windows", l:"Leverage is highest at an offer stage or after a clear, documented win"},
     ],
-    dos: [
-      "Let the employer name a number first whenever you can.",
-      "Negotiate the whole package — base, bonus, start date, review timing — not just salary.",
-      "Get any verbal offer changes confirmed in writing.",
-      "Practice saying the number out loud before the actual conversation.",
+    dos:[
+      "Negotiate right after a clear win is fresh and documented, not months later from memory.",
+      "Ask questions before making asks — understand budget constraints and timing first.",
+      "Bring a specific, justified number rather than a vague 'more.'",
     ],
-    donts: [
-      "Don't justify your ask with personal expenses — anchor it to market value and impact instead.",
-      "Don't accept on the spot — 24-48 hours to 'review' is a completely normal ask.",
-      "Don't negotiate over text or email if a short call is possible — tone gets lost in writing.",
-      "Don't burn the relationship over the last 2-3% — know when a deal is good enough.",
+    donts:[
+      "Don't negotiate during a hiring freeze or a bad quarter and expect the same leverage.",
+      "Don't compare your situation to a colleague's as your main argument — it rarely lands well.",
+      "Don't let a single 'no' end the conversation — ask what would need to be true to revisit it.",
     ],
-    body: [
-      {h:"Why the first number matters so much", p:"An offer isn't usually a company's ceiling — it's a starting bid. Because future raises are typically a percentage of current pay, a gap created on day one tends to persist, and often widens, for years afterward."},
-    ],
-    calculator: "salary",
-  },
-  {
-    id: "career-skills",
-    cat: "career",
-    title: "Continuous Skill Development",
-    summary: "Skills depreciate quietly. The people who stay valuable are the ones who treat learning as maintenance, not an event.",
-    stats: [
-      {v:"~5 yrs", l:"Rough half-life of a purely technical skill in fast-moving fields"},
-      {v:"1 hr/day", l:"A commonly cited baseline for deliberate skill-building"},
-    ],
-    dos: [
-      "Pick skills adjacent to what you already do well — leverage compounds faster than novelty.",
-      "Learn in public where possible; teaching a thing is the fastest way to actually know it.",
-      "Revisit fundamentals occasionally — they erode faster than people expect.",
-      "Pair every new skill with a small real project, not just theory.",
-    ],
-    donts: [
-      "Don't collect certificates as a substitute for applied practice.",
-      "Don't learn only what's comfortable — the useful stuff is often slightly uncomfortable.",
-      "Don't ignore 'soft' skills like writing and communication — they multiply everything else.",
-    ],
-    body: [
-      {h:"Maintenance, not a sprint", p:"Skill decay is normal, not a personal failing. Treating learning as a recurring habit — even a small one — avoids the much harder problem of trying to catch up all at once after years of drift."},
-    ],
-  },
-
-  // ---------------- INVEST ----------------
-  {
-    id: "invest-basics",
-    cat: "invest",
-    title: "Why Investing Beats Saving Alone",
-    summary: "Cash sitting still quietly loses value to inflation. Investing is simply asking money to do work instead of waiting.",
-    stats: [
-      {v:"~6-10%", l:"Illustrative long-run annual range for broad diversified equity markets, before inflation"},
-      {v:"~2-6%", l:"Illustrative long-run inflation range, which savings alone rarely outpaces"},
-    ],
-    dos: [
-      "Start with whatever amount is comfortable — consistency matters more than size at the start.",
-      "Understand what you're invested in before you invest in it.",
-      "Automate contributions so the decision only has to be made once.",
-      "Give growth-oriented investments real time — years, not months, to work.",
-    ],
-    donts: [
-      "Don't invest money you'll need within the next 1-2 years.",
-      "Don't chase last year's best-performing option — past results don't repeat on command.",
-      "Don't check balances daily — it invites reactive, costly decisions.",
-      "Don't treat any single figure in this section as a promise — markets fluctuate and can lose value too.",
-    ],
-    body: [
-      {h:"The quiet cost of doing nothing", p:"Money that isn't invested doesn't stay still — it slowly loses purchasing power to rising prices. Investing doesn't remove risk; it exchanges the certain, slow risk of inflation for a different, more manageable one."},
-      {h:"Time is the actual engine", p:"The figures people find impressive about long-term investing rarely come from picking well. They come from starting early and staying invested through the ordinary ups and downs. The calculator below shows how contribution size and time trade off against each other."},
-    ],
-    calculator: "compound",
-  },
-  {
-    id: "invest-diversify",
-    cat: "invest",
-    title: "Diversification, in Plain Terms",
-    summary: "Not a guarantee against loss — a way of making sure one bad decision can't be a fatal one.",
-    stats: [
-      {v:"1 idea", l:"What a single stock or asset really is — a bet on one story"},
-      {v:"Many", l:"The number of unrelated 'stories' a diversified portfolio holds at once"},
-    ],
-    dos: [
-      "Spread exposure across different asset types, industries, and geographies.",
-      "Rebalance occasionally so no single winner quietly becomes your whole portfolio.",
-      "Match your mix of investments to your actual timeline, not your mood that week.",
-      "Treat broad, low-cost diversified options as a sensible default, not the exciting choice.",
-    ],
-    donts: [
-      "Don't mistake owning many things in the same industry for real diversification.",
-      "Don't put a large share of savings into any single opportunity, however good it looks.",
-      "Don't confuse diversification with an absence of risk — it manages risk, it doesn't erase it.",
-    ],
-    body: [
-      {h:"Why concentration feels good until it doesn't", p:"A concentrated bet that works looks like genius in hindsight. The problem is survivorship — for every concentrated bet that worked, others didn't, and diversification is the discipline of not needing to know in advance which one you hold."},
+    body:[
+      {h:"Leverage is a moment, not a mood", p:"Confidence helps, but it doesn't create leverage that isn't there. Real leverage shows up at specific moments — a signed offer, a completed win, a budget cycle — and the skill is mostly in recognizing those moments rather than manufacturing confidence out of nothing."},
     ],
   },
   {
-    id: "invest-horizon",
-    cat: "invest",
-    title: "Matching Time Horizon to Risk",
-    summary: "The right amount of risk isn't a personality trait — it's mostly a function of when you'll need the money.",
-    stats: [
-      {v:"<2 yrs", l:"Money needed this soon generally belongs in low-volatility places"},
-      {v:"10+ yrs", l:"Longer horizons can typically absorb more short-term swings"},
+    id:"wealth-compound", cat:"wealth", no:"03",
+    title:"The Mechanics of Compounding",
+    summary:"Compounding isn't a strategy you choose — it's a property of time that rewards whoever stays in the game longest.",
+    stats:[
+      {v:"Time > Rate", l:"Doubling your years invested usually beats doubling your rate of return"},
+      {v:"~6–10%", l:"Illustrative long-run range for diversified equity markets, before inflation"},
     ],
-    dos: [
-      "Sort your money into 'buckets' by when you'll need it, and invest each bucket accordingly.",
-      "Revisit your mix as major life events shift your actual timeline.",
-      "Separate emergency money from growth money completely — different jobs, different accounts.",
+    dos:[
+      "Start before you feel ready — the earliest years matter disproportionately.",
+      "Reinvest returns instead of withdrawing them, especially early on.",
+      "Judge growth over years and decades, not months.",
     ],
-    donts: [
-      "Don't put short-term money into long-term, higher-volatility places out of impatience.",
-      "Don't let a long horizon talk you into ignoring risk entirely — some buffer is still sensible.",
-      "Don't make permanent decisions based on temporary market conditions.",
+    donts:[
+      "Don't interrupt compounding by moving money in and out chasing short-term news.",
+      "Don't assume a single good or bad year says much about a decades-long plan.",
+      "Don't treat any illustrative rate here as a promised return — markets vary and can lose value.",
     ],
-    body: [
-      {h:"A simple mental model", p:"Ask 'when do I need this back?' before asking 'what will it return?'. The first question does most of the work of deciding how much volatility is reasonable to accept."},
+    body:[
+      {h:"Why the early years feel boring and matter most", p:"In the first stretch, compounding looks almost flat — gains are small in absolute terms. The visible acceleration comes later, built entirely on a base laid down during the unglamorous early years. Leaving early is the single most common way people miss it."},
     ],
-    calculator: "compound",
-  },
-
-  // ---------------- FINANCE ----------------
-  {
-    id: "finance-budget",
-    cat: "finance",
-    title: "The 50/30/20 Budget Rule",
-    summary: "A rough, easy-to-remember split for income — not a law, a starting line.",
-    stats: [
-      {v:"50%", l:"Needs — housing, food, utilities, minimum debt payments"},
-      {v:"30%", l:"Wants — everything enjoyable but not essential"},
-      {v:"20%", l:"Savings & extra debt paydown"},
-    ],
-    dos: [
-      "Treat the percentages as a starting point and adjust for your actual cost of living.",
-      "Track spending for one real month before assuming you know where money goes.",
-      "Automate the 'savings' slice first, so it isn't competing with impulse spending.",
-      "Revisit the split whenever income or major expenses change.",
-    ],
-    donts: [
-      "Don't confuse 'wants' creeping into 'needs' — a bigger apartment than necessary is a want.",
-      "Don't aim for perfection in month one; a rough, honest budget beats an abandoned perfect one.",
-      "Don't ignore irregular expenses (annual bills, gifts) — average them into a monthly figure.",
-    ],
-    body: [
-      {h:"Why a rough rule beats no rule", p:"Precise budgeting apps fail for the same reason diets fail — they demand too much upkeep. A simple three-way split is easy to hold in your head, which is exactly why it tends to actually get used."},
-    ],
-    calculator: "budget",
+    calculator:"rule72",
   },
   {
-    id: "finance-emergency",
-    cat: "finance",
-    title: "Building an Emergency Fund",
-    summary: "The least exciting financial asset you'll ever hold, and often the one that matters most in a bad month.",
-    stats: [
-      {v:"3-6 mo", l:"Commonly suggested range of essential expenses to hold as a buffer"},
-      {v:"1st", l:"Priority before most other financial goals, including extra investing"},
+    id:"wealth-retire", cat:"wealth", no:"04",
+    title:"Planning for Retirement, Roughly",
+    summary:"You don't need a perfect forecast — you need a rough, honest number and a plan to close the gap to it.",
+    stats:[
+      {v:"~4%", l:"A commonly referenced starting-point withdrawal rate, not a guarantee"},
+      {v:"Inflation", l:"The quiet factor that erodes a nominal number's real value over decades"},
     ],
-    dos: [
-      "Keep this money boring and accessible — a simple savings account, not invested.",
-      "Build it in stages — even one month of expenses is a real safety improvement over zero.",
-      "Rebuild it immediately after any use, before resuming other financial goals.",
-      "Base the target on essential expenses only, not your full current spending.",
+    dos:[
+      "Estimate in today's money, then adjust for inflation — nominal numbers alone mislead over decades.",
+      "Revisit the plan every few years as income, goals, and markets shift.",
+      "Separate 'essential' retirement income needs from 'nice to have' ones.",
     ],
-    donts: [
-      "Don't invest emergency savings in anything that can lose value when you might need it fast.",
-      "Don't skip this step to 'invest instead' — a market downturn plus a job loss is a bad combination without one.",
-      "Don't treat it as a general savings account for non-emergencies.",
+    donts:[
+      "Don't rely on a single fixed percentage forever — withdrawal needs shift with markets and health.",
+      "Don't ignore inflation when comparing a distant target to today's cost of living.",
+      "Don't delay starting because the full number feels intimidating — the early years matter most.",
     ],
-    body: [
-      {h:"What it actually buys you", p:"An emergency fund's real return isn't a percentage — it's the ability to make calm decisions during a bad month instead of forced ones, like high-interest borrowing or a rushed asset sale at a bad time."},
+    body:[
+      {h:"Two numbers, not one", p:"A useful retirement plan tracks both a nominal target and its inflation-adjusted, 'real' equivalent. The nominal number motivates; the real number keeps expectations honest. The calculator alongside shows both."},
     ],
-    calculator: "emergency",
+    calculator:"retirement",
   },
   {
-    id: "finance-debt",
-    cat: "finance",
-    title: "Managing & Reducing Debt",
-    summary: "Not all debt behaves the same way — how you pay it down should depend on what kind it is.",
-    stats: [
-      {v:"2 methods", l:"Avalanche (highest interest first) vs Snowball (smallest balance first)"},
+    id:"money-borrow", cat:"money", no:"05",
+    title:"Borrowing Wisely",
+    summary:"Debt isn't inherently bad — the interest rate and what it's funding decide that, not the existence of the loan itself.",
+    stats:[
+      {v:"Rate matters", l:"The gap between a loan's rate and your expected investment return decides the trade-off"},
     ],
-    dos: [
-      "List every debt with its interest rate before deciding a payoff strategy.",
-      "Pay more than the minimum whenever possible — minimums are designed to be slow.",
-      "Consider consolidating high-interest debt if a genuinely lower rate is available.",
-      "Keep making minimum payments on everything else while focusing extra payments on one target.",
+    dos:[
+      "Compare the total cost of a loan (principal + interest), not just the monthly payment.",
+      "Shop multiple lenders — a percentage point of rate difference compounds significantly over a long tenure.",
+      "Understand prepayment terms before signing — some loans penalize paying early.",
     ],
-    donts: [
-      "Don't ignore high-interest debt while investing elsewhere at a lower expected return.",
-      "Don't take on new debt to solve a problem caused by existing debt without a clear plan.",
-      "Don't close old accounts the moment they're paid off if it meaningfully affects your credit history.",
+    donts:[
+      "Don't judge a loan only by whether the monthly payment 'feels' affordable.",
+      "Don't borrow for depreciating purchases at high rates without a clear, considered reason.",
+      "Don't ignore the amortization shape — early payments are mostly interest on many long loans.",
     ],
-    body: [
-      {h:"Avalanche vs snowball", p:"Paying the highest-interest debt first is mathematically optimal. Paying the smallest balance first often works better in practice, because the quick wins keep motivation alive. The 'best' method is the one you'll actually stick with."},
+    body:[
+      {h:"What a monthly payment hides", p:"Two loans with the same monthly payment can have very different total costs depending on rate and tenure. The sticker number people anchor on — the monthly payment — is the one number that least reflects what a loan actually costs overall."},
     ],
+    calculator:"loan",
   },
-
-  // ---------------- LIFE ----------------
   {
-    id: "life-time",
-    cat: "life",
-    title: "Time Management Basics",
-    summary: "Time can't be saved or stored — it can only be spent. The only real lever is what you spend it on.",
-    stats: [
-      {v:"~25 min", l:"Rough average time to refocus after a single interruption"},
+    id:"money-payfirst", cat:"money", no:"06",
+    title:"Paying Yourself First",
+    summary:"The order money moves in matters as much as how much there is — savings that happen last rarely happen at all.",
+    stats:[
+      {v:"1st, not last", l:"Where savings sit in the monthly order of operations"},
     ],
-    dos: [
-      "Protect a block of uninterrupted time for your most important work each day.",
-      "Write tomorrow's top 3 priorities the night before, while your head is clearer.",
-      "Batch similar small tasks instead of context-switching all day.",
-      "Build in real recovery time — it isn't optional, it's part of the system.",
+    dos:[
+      "Automate a transfer to savings the day income arrives, before anything else.",
+      "Treat that transfer like a fixed bill — non-negotiable, not a leftover.",
+      "Start small and increase the amount gradually as it becomes routine.",
     ],
-    donts: [
-      "Don't confuse being busy with being effective — they're often unrelated.",
-      "Don't let your calendar be filled entirely by other people's priorities.",
-      "Don't multitask on anything that actually requires focus.",
+    donts:[
+      "Don't wait to see 'what's left' at month's end — for most people, that number is zero.",
+      "Don't set the automatic amount so high it forces you to cancel it within a month.",
+      "Don't count debt paydown and savings as interchangeable without checking the interest rates involved.",
     ],
-    body: [
-      {h:"Attention, not hours, is the scarce resource", p:"Two people can have identical calendars and wildly different output, because the real constraint is focused attention, not raw hours available. Protecting attention matters more than squeezing in more hours."},
+    body:[
+      {h:"Order beats intention", p:"Nearly everyone intends to save. The people who actually do usually removed the decision entirely, by making saving the very first thing that happens to a paycheck rather than a choice made under month-end pressure."},
     ],
   },
   {
-    id: "life-decisions",
-    cat: "life",
-    title: "Making Better Decisions",
-    summary: "Most regret comes less from bad outcomes and more from decisions made carelessly, regardless of how they turned out.",
-    stats: [
-      {v:"2 types", l:"Reversible decisions vs irreversible ones — worth treating differently"},
+    id:"habits-small", cat:"habits", no:"07",
+    title:"The Power of Small, Consistent Effort",
+    summary:"A tiny daily edge, repeated, produces results that a single burst of intense effort almost never matches.",
+    stats:[
+      {v:"Repetition", l:"Matters more than intensity for most durable change"},
     ],
-    dos: [
-      "Separate reversible decisions (act fast) from irreversible ones (slow down, gather input).",
-      "Write down your reasoning before a big decision — it makes the logic checkable later.",
-      "Ask what you'd tell a friend in the same situation — it removes some emotional noise.",
-      "Set a decision deadline for yourself to avoid endless research replacing action.",
+    dos:[
+      "Choose a change small enough that skipping it feels almost silly.",
+      "Track consistency (did I show up?) rather than only outcomes.",
+      "Let the habit survive a bad day at reduced intensity rather than skipping entirely.",
     ],
-    donts: [
-      "Don't treat every decision with the same weight — most don't deserve extensive deliberation.",
-      "Don't decide big things when you're exhausted, starving, or freshly upset.",
-      "Don't confuse confidence with correctness — the two are only loosely related.",
+    donts:[
+      "Don't rely on a single burst of motivation to carry a year-long change.",
+      "Don't set the daily bar so high that missing one day feels like failure.",
+      "Don't judge progress daily — small effects are invisible day to day and obvious only in hindsight.",
     ],
-    body: [
-      {h:"Judge the process, not just the result", p:"A good decision can still produce a bad outcome, and a careless decision can still get lucky. Over a lifetime of decisions, judging your own process rather than each individual result leads to better decisions on average."},
+    body:[
+      {h:"Why small looks unimpressive until it isn't", p:"A 1% daily change is genuinely hard to notice in the moment — which is exactly why most people abandon it before the compounding becomes visible. The calculator alongside makes the invisible math concrete."},
     ],
+    calculator:"onepercent",
   },
   {
-    id: "life-habits",
-    cat: "life",
-    title: "Building Habits That Stick",
-    summary: "Willpower is a poor long-term strategy. Systems and environments are what actually hold up.",
-    stats: [
-      {v:"Small", l:"The size of change most successful habit-builders start with"},
+    id:"habits-friction", cat:"habits", no:"08",
+    title:"Designing Friction, Not Willpower",
+    summary:"The most reliable habit-builders rarely have more willpower — they've simply rearranged their environment so the easy path is the right one.",
+    stats:[
+      {v:"Environment", l:"Usually explains more of the difference than motivation does"},
     ],
-    dos: [
-      "Attach a new habit to an existing one you already do reliably.",
-      "Make the desired behavior slightly easier to start than the alternative.",
-      "Track the habit somewhere visible — visibility itself is motivating.",
-      "Expect to miss a day eventually, and plan to simply resume, not restart from zero.",
+    dos:[
+      "Make the desired action require fewer steps than the undesired one.",
+      "Remove the object or trigger of an unwanted habit from easy reach.",
+      "Pair a new habit with an existing, reliable routine.",
     ],
-    donts: [
-      "Don't rely on motivation alone — it's unreliable by nature.",
-      "Don't start too many new habits simultaneously; attention is limited.",
-      "Don't treat one missed day as a failure that resets your progress to zero.",
+    donts:[
+      "Don't rely on remembering — visibility and default settings do more work than memory.",
+      "Don't design a system that depends on a good mood to function.",
+      "Don't treat one broken streak as evidence the whole system failed — resume, don't restart.",
     ],
-    body: [
-      {h:"Design the environment, not just the intention", p:"People with strong habits usually aren't more disciplined — they've simply arranged their environment so the desired behavior is the path of least resistance, and the undesired one has small extra friction added to it."},
+    body:[
+      {h:"Friction is a design choice", p:"Every environment has friction built into it, whether anyone designed it deliberately or not. The habit-friendly version of a space isn't the one that requires more discipline to navigate — it's the one where discipline is needed the least."},
     ],
   },
 ];
 
-/* ============================ ICONS ============================ */
+/* ============================ ICONS ============================
+   Distinct SILHOUETTES per category — never rely on color alone.
+*/
+
+const IconBriefcase = (p) => (
+  <svg width={p.s||18} height={p.s||18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><line x1="2" y1="13" x2="22" y2="13"/>
+  </svg>
+);
+const IconSprout = (p) => (
+  <svg width={p.s||18} height={p.s||18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M7 20h10"/><path d="M12 20v-8"/><path d="M12 12c0-3-2-5-6-5 0 4 2 6 6 5Z"/><path d="M12 12c0-4 2-7 7-7 0 5-2 8-7 7Z"/>
+  </svg>
+);
+const IconCoins = (p) => (
+  <svg width={p.s||18} height={p.s||18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <ellipse cx="9" cy="7" rx="6" ry="3.2"/><path d="M3 7v5c0 1.8 2.7 3.2 6 3.2s6-1.4 6-3.2V7"/>
+    <path d="M3 12v5c0 1.8 2.7 3.2 6 3.2 3 0 5.4-1 6-2.4"/>
+    <ellipse cx="17" cy="12.5" rx="4.3" ry="2.3"/><path d="M12.7 12.5v4.4c0 1.3 1.9 2.3 4.3 2.3s4.3-1 4.3-2.3v-4.4"/>
+  </svg>
+);
+const IconFootprints = (p) => (
+  <svg width={p.s||18} height={p.s||18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M4 16c-1 0-2-1-2-2.5S3 10 4.5 10 6 11 6 12.5c0 .8-.2 1.5-.6 2"/>
+    <path d="M5.2 8.5c1 .3 1.8-.6 1.8-2 0-1.6-.9-2.5-1.8-2.2C4.2 4.6 4 6 4 7c0 .8.3 1.3 1.2 1.5Z"/>
+    <path d="M20 20c-1 0-2-1-2-2.5S19 15 20.5 15s1.5 1 1.5 2.5c0 .8-.2 1.5-.6 2"/>
+    <path d="M21.2 12.5c1 .3 1.8-.6 1.8-2 0-1.6-.9-2.5-1.8-2.2-1 .3-1.2 1.7-1.2 2.7 0 .8.3 1.3 1.2 1.5Z"/>
+  </svg>
+);
+const CAT_ICON = {briefcase:IconBriefcase, sprout:IconSprout, coins:IconCoins, footprints:IconFootprints};
 
 const IconSearch = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-  </svg>
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
 );
-const IconChevron = ({className}) => (
-  <svg className={className} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
-    <polyline points="9 18 15 12 9 6"/>
-  </svg>
+const IconIndex = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="4" y1="18" x2="17" y2="18"/></svg>
 );
-const IconMenu = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-    <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
-  </svg>
+const IconClose = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
 );
-const CompassMark = ({size=30}) => (
-  <svg width={size} height={size} viewBox="0 0 40 40" fill="none">
-    <circle cx="20" cy="20" r="18" stroke="#C08B2C" strokeWidth="1.6"/>
-    <circle cx="20" cy="20" r="1.6" fill="#C08B2C"/>
-    <path d="M20 6 L23.5 18 L20 20 L16.5 18 Z" fill="#C08B2C"/>
-    <path d="M20 34 L17 24 L20 20 L23 24 Z" fill="#E3B85E" opacity="0.55"/>
-  </svg>
+const IconArrow = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
 );
-const IconCalc = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-    <rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/>
-    <line x1="8" y1="11" x2="8" y2="11"/><line x1="12" y1="11" x2="12" y2="11"/><line x1="16" y1="11" x2="16" y2="11"/>
-    <line x1="8" y1="15" x2="8" y2="15"/><line x1="12" y1="15" x2="12" y2="15"/><line x1="16" y1="15" x2="16" y2="15"/>
-    <line x1="8" y1="19" x2="16" y2="19"/>
-  </svg>
+/* Do = filled circle + check (round shape). Don't = filled diamond + X (angular shape).
+   Shape difference (round vs angular) survives even in grayscale / full color-blindness. */
+const IconDoBadge = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#0072B2"/><path d="M7 12.5l3.2 3.2L17 9" stroke="#fff" strokeWidth="2.2" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg>
 );
+const IconDontBadge = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3" transform="rotate(45 12 12)" fill="#D55E00"/><path d="M9 9l6 6M15 9l-6 6" stroke="#fff" strokeWidth="2.2" strokeLinecap="round"/></svg>
+);
+const IconDoLi = () => (<svg width="15" height="15" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#0072B2"/><path d="M7 12.5l3.2 3.2L17 9" stroke="#fff" strokeWidth="2.6" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg>);
+const IconDontLi = () => (<svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3" transform="rotate(45 12 12)" fill="#D55E00"/><path d="M9 9l6 6M15 9l-6 6" stroke="#fff" strokeWidth="2.6" strokeLinecap="round"/></svg>);
+const IconStat = () => (<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>);
+const IconCalcTool = () => (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><circle cx="8" cy="11" r="0.6" fill="#fff"/><circle cx="12" cy="11" r="0.6" fill="#fff"/><circle cx="16" cy="11" r="0.6" fill="#fff"/><line x1="8" y1="16" x2="16" y2="16"/></svg>);
+
+/* ---- Growth ring: magnitude encoded by RADIUS, not color ---- */
+function GrowthRing({ value, max, size=160, stroke=10, label, sublabel, accent="var(--safe-amber)" }){
+  const ref = useRef(null);
+  const r = (size - stroke)/2;
+  const c = 2*Math.PI*r;
+  const pct = Math.max(0, Math.min(1, max>0 ? value/max : 0));
+  const [dash, setDash] = useState(c);
+  useEffect(()=>{
+    const target = c*(1-pct);
+    const id = requestAnimationFrame(()=>setDash(target));
+    return ()=>cancelAnimationFrame(id);
+  }, [pct, c]);
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} role="img" aria-label={label}>
+      <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="rgba(255,255,255,0.14)" strokeWidth={stroke}/>
+      <circle cx={size/2} cy={size/2} r={r} fill="none" stroke={accent} strokeWidth={stroke}
+        strokeDasharray={c} strokeDashoffset={dash} strokeLinecap="round" transform={`rotate(-90 ${size/2} ${size/2})`}
+        style={{transition:"stroke-dashoffset 0.7s ease"}}/>
+      <text x="50%" y="47%" textAnchor="middle" fontFamily="IBM Plex Mono, monospace" fontSize={size*0.13} fill="#fff" fontWeight="700">{label}</text>
+      {sublabel && <text x="50%" y="63%" textAnchor="middle" fontFamily="Work Sans, sans-serif" fontSize={size*0.065} fill="rgba(255,255,255,0.6)">{sublabel}</text>}
+    </svg>
+  );
+}
+
+function HeroRings({size=260}){
+  const scale = size/240;
+  const rings = [ {r:100, w:9, o:0.9}, {r:78, w:9, o:1}, {r:56, w:9, o:1}, {r:34, w:9, o:1} ];
+  return (
+    <svg width={size} height={size} viewBox="0 0 240 240">
+      <g transform="translate(120,120)">
+        {rings.map((rg,i)=>(
+          <circle key={i} r={rg.r} fill="none" stroke={i%2===0 ? "#16302A" : "#E69F00"} strokeOpacity={rg.o*0.85} strokeWidth={rg.w}
+            strokeDasharray={2*Math.PI*rg.r} strokeDashoffset={2*Math.PI*rg.r*(0.08*(i+1))} strokeLinecap="round"/>
+        ))}
+        <circle r="14" fill="#16302A"/>
+      </g>
+    </svg>
+  );
+}
+function LogoMark(){
+  return (
+    <svg width="32" height="32" viewBox="0 0 40 40">
+      <circle cx="20" cy="20" r="17" fill="none" stroke="#16302A" strokeWidth="3.2" strokeOpacity="0.85" strokeDasharray="107" strokeDashoffset="18"/>
+      <circle cx="20" cy="20" r="10.5" fill="none" stroke="#E69F00" strokeWidth="3.2" strokeDasharray="66" strokeDashoffset="10"/>
+      <circle cx="20" cy="20" r="4" fill="#16302A"/>
+    </svg>
+  );
+}
 
 /* ============================ HELPERS ============================ */
-
-const fmtMoney = (n) => {
-  if (!isFinite(n)) return "—";
-  return "$" + Math.round(n).toLocaleString("en-US");
-};
+const fmt = (n)=> !isFinite(n) ? "—" : "$"+Math.round(n).toLocaleString("en-US");
 
 /* ============================ CALCULATORS ============================ */
 
-function CompoundCalculator(){
-  const [principal, setPrincipal] = useState(2000);
-  const [monthly, setMonthly] = useState(200);
+function Rule72Calculator(){
   const [rate, setRate] = useState(7);
-  const [years, setYears] = useState(15);
-
-  const {future, contributed, growth} = useMemo(() => {
-    const r = rate/100/12;
-    const n = years*12;
-    const fv = r > 0
-      ? principal*Math.pow(1+r, n) + monthly*((Math.pow(1+r, n)-1)/r)
-      : principal + monthly*n;
-    const contributed = principal + monthly*n;
-    return {future: fv, contributed, growth: fv - contributed};
-  }, [principal, monthly, rate, years]);
-
+  const years = rate>0 ? 72/rate : Infinity;
   return (
-    <div className="calc-wrap">
-      <div className="calc-head">
-        <div className="ico"><IconCalc/></div>
+    <div className="calc-card">
+      <div className="calc-head"><div className="calc-ring-mini"><IconCalcTool/></div><div className="calc-title">Time-to-Double (Rule of 72)</div></div>
+      <div className="calc-sub">A quick mental-math estimate of how long a rate takes to double an amount.</div>
+      <div className="calc-body">
         <div>
-          <div className="calc-title">Compound Growth Calculator</div>
+          <div className="calc-field">
+            <label>Assumed annual rate <span className="v">{rate}%</span></label>
+            <input type="range" min="1" max="20" step="0.5" value={rate} onChange={e=>setRate(+e.target.value)} />
+          </div>
+          <div className="calc-results" style={{marginTop:16}}>
+            <div className="calc-result"><span className="rl">Years to double</span><span className="rv">{isFinite(years) ? years.toFixed(1) : "—"}</span></div>
+            <div className="calc-result"><span className="rl">Doublings in 30 yrs</span><span className="rv">{isFinite(years) ? Math.floor(30/years) : "—"}</span></div>
+          </div>
+        </div>
+        <div className="ring-stage">
+          <GrowthRing value={20-rate} max={19} size={150} label={isFinite(years)?years.toFixed(1)+"y":"—"} sublabel="to double" accent="var(--safe-amber)"/>
         </div>
       </div>
-      <div className="calc-sub">See how a starting amount plus regular contributions could grow over time at an assumed rate.</div>
-      <div className="calc-grid">
-        <div className="calc-field">
-          <label>Starting amount <span className="v">{fmtMoney(principal)}</span></label>
-          <input type="range" min="0" max="50000" step="100" value={principal} onChange={e=>setPrincipal(+e.target.value)} />
-        </div>
-        <div className="calc-field">
-          <label>Monthly contribution <span className="v">{fmtMoney(monthly)}</span></label>
-          <input type="range" min="0" max="3000" step="10" value={monthly} onChange={e=>setMonthly(+e.target.value)} />
-        </div>
-        <div className="calc-field">
-          <label>Assumed annual rate <span className="v">{rate}%</span></label>
-          <input type="range" min="0" max="15" step="0.5" value={rate} onChange={e=>setRate(+e.target.value)} />
-        </div>
-        <div className="calc-field">
-          <label>Time horizon <span className="v">{years} yrs</span></label>
-          <input type="range" min="1" max="40" step="1" value={years} onChange={e=>setYears(+e.target.value)} />
-        </div>
-      </div>
-      <div className="calc-results">
-        <div className="calc-result"><div className="rv">{fmtMoney(future)}</div><div className="rl">Projected value</div></div>
-        <div className="calc-result"><div className="rv">{fmtMoney(contributed)}</div><div className="rl">You contributed</div></div>
-        <div className="calc-result"><div className="rv">{fmtMoney(growth)}</div><div className="rl">Growth earned</div></div>
-      </div>
-      <div className="calc-note">Illustrative only — a fixed rate is assumed for simplicity, but real markets fluctuate year to year and can lose value. This is not investment advice or a projection of any specific product's performance.</div>
+      <div className="calc-note">Ring size reflects speed, not meaning conveyed by color — a smaller ring means a faster double. 72/rate is a well-known estimate, most accurate for rates roughly between 5–12%.</div>
     </div>
   );
 }
 
-function EmergencyFundCalculator(){
-  const [expenses, setExpenses] = useState(1800);
-  const [months, setMonths] = useState(4);
-  const [current, setCurrent] = useState(500);
-  const [monthlySave, setMonthlySave] = useState(150);
+function RetirementCalculator(){
+  const [current, setCurrent] = useState(15000);
+  const [monthly, setMonthly] = useState(400);
+  const [rate, setRate] = useState(7);
+  const [years, setYears] = useState(25);
+  const [inflation, setInflation] = useState(3);
 
-  const {target, gap, monthsToGoal} = useMemo(() => {
-    const target = expenses*months;
-    const gap = Math.max(target-current, 0);
-    const monthsToGoal = monthlySave>0 ? Math.ceil(gap/monthlySave) : Infinity;
-    return {target, gap, monthsToGoal};
-  }, [expenses, months, current, monthlySave]);
+  const {nominal, real, monthlyIncome} = useMemo(()=>{
+    const r = rate/100/12; const n = years*12;
+    const fv = r>0 ? current*Math.pow(1+r,n) + monthly*((Math.pow(1+r,n)-1)/r) : current+monthly*n;
+    const real = fv / Math.pow(1+inflation/100, years);
+    const monthlyIncome = (fv*0.04)/12;
+    return {nominal:fv, real, monthlyIncome};
+  }, [current, monthly, rate, years, inflation]);
 
   return (
-    <div className="calc-wrap">
-      <div className="calc-head">
-        <div className="ico"><IconCalc/></div>
-        <div className="calc-title">Emergency Fund Calculator</div>
-      </div>
-      <div className="calc-sub">Work out your target buffer and how long it will take to reach it.</div>
+    <div className="calc-card">
+      <div className="calc-head"><div className="calc-ring-mini"><IconCalcTool/></div><div className="calc-title">Retirement Corpus Calculator</div></div>
+      <div className="calc-sub">Projects both the nominal total and its inflation-adjusted real value.</div>
       <div className="calc-grid">
-        <div className="calc-field">
-          <label>Essential monthly expenses <span className="v">{fmtMoney(expenses)}</span></label>
-          <input type="range" min="200" max="6000" step="50" value={expenses} onChange={e=>setExpenses(+e.target.value)} />
-        </div>
-        <div className="calc-field">
-          <label>Months of cover wanted <span className="v">{months} mo</span></label>
-          <input type="range" min="1" max="12" step="1" value={months} onChange={e=>setMonths(+e.target.value)} />
-        </div>
-        <div className="calc-field">
-          <label>Currently saved <span className="v">{fmtMoney(current)}</span></label>
-          <input type="range" min="0" max="20000" step="50" value={current} onChange={e=>setCurrent(+e.target.value)} />
-        </div>
-        <div className="calc-field">
-          <label>Can save per month <span className="v">{fmtMoney(monthlySave)}</span></label>
-          <input type="range" min="0" max="2000" step="10" value={monthlySave} onChange={e=>setMonthlySave(+e.target.value)} />
-        </div>
+        <div className="calc-field"><label>Current savings <span className="v">{fmt(current)}</span></label><input type="range" min="0" max="100000" step="500" value={current} onChange={e=>setCurrent(+e.target.value)} /></div>
+        <div className="calc-field"><label>Monthly contribution <span className="v">{fmt(monthly)}</span></label><input type="range" min="0" max="3000" step="25" value={monthly} onChange={e=>setMonthly(+e.target.value)} /></div>
+        <div className="calc-field"><label>Assumed return <span className="v">{rate}%</span></label><input type="range" min="1" max="12" step="0.5" value={rate} onChange={e=>setRate(+e.target.value)} /></div>
+        <div className="calc-field"><label>Years to grow <span className="v">{years}</span></label><input type="range" min="1" max="45" step="1" value={years} onChange={e=>setYears(+e.target.value)} /></div>
+        <div className="calc-field" style={{gridColumn:"1 / -1"}}><label>Assumed inflation <span className="v">{inflation}%</span></label><input type="range" min="0" max="8" step="0.5" value={inflation} onChange={e=>setInflation(+e.target.value)} /></div>
       </div>
       <div className="calc-results">
-        <div className="calc-result"><div className="rv">{fmtMoney(target)}</div><div className="rl">Target buffer</div></div>
-        <div className="calc-result"><div className="rv">{fmtMoney(gap)}</div><div className="rl">Still needed</div></div>
-        <div className="calc-result"><div className="rv">{isFinite(monthsToGoal) ? monthsToGoal+" mo" : "—"}</div><div className="rl">Time to reach it</div></div>
+        <div className="calc-result"><span className="rl">Nominal value at target year</span><span className="rv">{fmt(nominal)}</span></div>
+        <div className="calc-result"><span className="rl">Real value, today's money</span><span className="rv">{fmt(real)}</span></div>
+        <div className="calc-result"><span className="rl">Sustainable monthly income (4% rule)</span><span className="rv">{fmt(monthlyIncome)}</span></div>
       </div>
-      <div className="calc-note">A commonly cited starting range is 3-6 months of essential expenses — adjust to fit your own job stability and dependents.</div>
+      <div className="calc-note">Illustrative only — assumes a constant rate and the commonly cited 4% withdrawal guideline, neither of which is guaranteed. Not personalized financial advice.</div>
     </div>
   );
 }
 
-function BudgetCalculator(){
-  const [income, setIncome] = useState(4000);
-  const needs = income*0.5, wants = income*0.3, savings = income*0.2;
+function LoanCalculator(){
+  const [amount, setAmount] = useState(20000);
+  const [rate, setRate] = useState(8);
+  const [years, setYears] = useState(5);
+  const {emi, totalPaid, totalInterest} = useMemo(()=>{
+    const r = rate/100/12; const n = years*12;
+    const emi = r>0 ? (amount*r*Math.pow(1+r,n))/(Math.pow(1+r,n)-1) : amount/n;
+    const totalPaid = emi*n;
+    return {emi, totalPaid, totalInterest: totalPaid-amount};
+  }, [amount, rate, years]);
+  const interestShare = totalPaid>0 ? totalInterest/totalPaid : 0;
   return (
-    <div className="calc-wrap">
-      <div className="calc-head">
-        <div className="ico"><IconCalc/></div>
-        <div className="calc-title">50 / 30 / 20 Budget Calculator</div>
-      </div>
-      <div className="calc-sub">Enter take-home income to see a suggested starting split.</div>
-      <div className="calc-grid">
-        <div className="calc-field" style={{gridColumn:"1 / -1"}}>
-          <label>Monthly take-home income <span className="v">{fmtMoney(income)}</span></label>
-          <input type="range" min="500" max="20000" step="50" value={income} onChange={e=>setIncome(+e.target.value)} />
+    <div className="calc-card">
+      <div className="calc-head"><div className="calc-ring-mini"><IconCalcTool/></div><div className="calc-title">Loan / EMI Calculator</div></div>
+      <div className="calc-sub">Monthly payment and the true total cost of a fixed-rate loan.</div>
+      <div className="calc-body">
+        <div>
+          <div className="calc-grid">
+            <div className="calc-field" style={{gridColumn:"1 / -1"}}><label>Loan amount <span className="v">{fmt(amount)}</span></label><input type="range" min="1000" max="200000" step="500" value={amount} onChange={e=>setAmount(+e.target.value)} /></div>
+            <div className="calc-field"><label>Interest rate <span className="v">{rate}%</span></label><input type="range" min="1" max="20" step="0.25" value={rate} onChange={e=>setRate(+e.target.value)} /></div>
+            <div className="calc-field"><label>Tenure <span className="v">{years} yrs</span></label><input type="range" min="1" max="30" step="1" value={years} onChange={e=>setYears(+e.target.value)} /></div>
+          </div>
+          <div className="calc-results">
+            <div className="calc-result"><span className="rl">Monthly payment</span><span className="rv">{fmt(emi)}</span></div>
+            <div className="calc-result"><span className="rl">Total paid over term</span><span className="rv">{fmt(totalPaid)}</span></div>
+            <div className="calc-result"><span className="rl">Of which is interest</span><span className="rv">{fmt(totalInterest)}</span></div>
+          </div>
+        </div>
+        <div className="ring-stage">
+          <GrowthRing value={interestShare*100} max={100} size={150} label={Math.round(interestShare*100)+"%"} sublabel="of total is interest" accent="var(--safe-vermillion)"/>
         </div>
       </div>
-      <div className="calc-results">
-        <div className="calc-result"><div className="rv">{fmtMoney(needs)}</div><div className="rl">Needs (50%)</div></div>
-        <div className="calc-result"><div className="rv">{fmtMoney(wants)}</div><div className="rl">Wants (30%)</div></div>
-        <div className="calc-result"><div className="rv">{fmtMoney(savings)}</div><div className="rl">Savings (20%)</div></div>
-      </div>
-      <div className="calc-note">A starting split, not a rule — adjust the ratios to fit your real cost of living, especially in high-cost areas.</div>
+      <div className="calc-note">Assumes a fixed rate across the full term. Real loans may include fees, variable rates, or prepayment penalties — check the specific offer.</div>
     </div>
   );
 }
 
-function SalaryCalculator(){
-  const [current, setCurrent] = useState(60000);
-  const [negotiated, setNegotiated] = useState(5);
-  const [growth, setGrowth] = useState(4);
-  const [years, setYears] = useState(10);
-
-  const {withNeg, withoutNeg, diff} = useMemo(() => {
-    const base = current;
-    const negStart = current*(1+negotiated/100);
-    let a = negStart, b = base, sumA=0, sumB=0;
-    for(let i=0;i<years;i++){
-      sumA += a; sumB += b;
-      a *= (1+growth/100); b *= (1+growth/100);
-    }
-    return {withNeg: sumA, withoutNeg: sumB, diff: sumA-sumB};
-  }, [current, negotiated, growth, years]);
-
+function OnePercentCalculator(){
+  const [days, setDays] = useState(365);
+  const [rate, setRate] = useState(1);
+  const gain = Math.pow(1+rate/100, days);
+  const loss = Math.pow(1-rate/100, days);
   return (
-    <div className="calc-wrap">
-      <div className="calc-head">
-        <div className="ico"><IconCalc/></div>
-        <div className="calc-title">Salary Negotiation Calculator</div>
-      </div>
-      <div className="calc-sub">See the cumulative effect of negotiating your starting offer, assuming similar % raises either way.</div>
+    <div className="calc-card">
+      <div className="calc-head"><div className="calc-ring-mini"><IconCalcTool/></div><div className="calc-title">"1% Better" Effort Calculator</div></div>
+      <div className="calc-sub">The same small daily change, compounded — in the helpful direction and the harmful one.</div>
       <div className="calc-grid">
-        <div className="calc-field">
-          <label>Current offer <span className="v">{fmtMoney(current)}</span></label>
-          <input type="range" min="20000" max="250000" step="1000" value={current} onChange={e=>setCurrent(+e.target.value)} />
-        </div>
-        <div className="calc-field">
-          <label>Negotiated bump <span className="v">{negotiated}%</span></label>
-          <input type="range" min="0" max="20" step="1" value={negotiated} onChange={e=>setNegotiated(+e.target.value)} />
-        </div>
-        <div className="calc-field">
-          <label>Assumed annual raise <span className="v">{growth}%</span></label>
-          <input type="range" min="0" max="10" step="0.5" value={growth} onChange={e=>setGrowth(+e.target.value)} />
-        </div>
-        <div className="calc-field">
-          <label>Years to project <span className="v">{years} yrs</span></label>
-          <input type="range" min="1" max="30" step="1" value={years} onChange={e=>setYears(+e.target.value)} />
-        </div>
+        <div className="calc-field"><label>Daily change <span className="v">±{rate}%</span></label><input type="range" min="0.25" max="5" step="0.25" value={rate} onChange={e=>setRate(+e.target.value)} /></div>
+        <div className="calc-field"><label>Over how many days <span className="v">{days}</span></label><input type="range" min="7" max="730" step="1" value={days} onChange={e=>setDays(+e.target.value)} /></div>
       </div>
-      <div className="calc-results">
-        <div className="calc-result"><div className="rv">{fmtMoney(withNeg)}</div><div className="rl">Cumulative, negotiated</div></div>
-        <div className="calc-result"><div className="rv">{fmtMoney(withoutNeg)}</div><div className="rl">Cumulative, as offered</div></div>
-        <div className="calc-result"><div className="rv">{fmtMoney(diff)}</div><div className="rl">Difference over {years} yrs</div></div>
+      <div className="calc-results" style={{flexDirection:"row", gap:12}}>
+        <div className="calc-result" style={{flex:1, borderLeft:"3px solid var(--safe-blue)"}}><span className="rl">If +{rate}%/day, consistently</span><span className="rv">{gain.toFixed(gain>100?0:1)}×</span></div>
+        <div className="calc-result" style={{flex:1, borderLeft:"3px solid var(--safe-vermillion)"}}><span className="rl">If −{rate}%/day, consistently</span><span className="rv">{loss.toFixed(3)}×</span></div>
       </div>
-      <div className="calc-note">Illustrative — real raises are rarely a flat percentage every year, but the compounding effect of a higher starting point is directionally real.</div>
+      <div className="calc-note">A simplified illustration of compounding applied to consistency of effort rather than money — real skill or habit growth isn't perfectly smooth or exponential, but the direction of the effect is real.</div>
     </div>
   );
 }
 
 function Calculator({type}){
-  if(type==="compound") return <CompoundCalculator/>;
-  if(type==="emergency") return <EmergencyFundCalculator/>;
-  if(type==="budget") return <BudgetCalculator/>;
-  if(type==="salary") return <SalaryCalculator/>;
+  if(type==="rule72") return <Rule72Calculator/>;
+  if(type==="retirement") return <RetirementCalculator/>;
+  if(type==="loan") return <LoanCalculator/>;
+  if(type==="onepercent") return <OnePercentCalculator/>;
   return null;
 }
 
-/* ============================ SIDEBAR ============================ */
+/* ============================ INDEX DRAWER ============================ */
 
-function Sidebar({activeTopic, onSelect, onHome, query, setQuery, mobileOpen}){
-  const [openCats, setOpenCats] = useState(()=>Object.fromEntries(CATEGORIES.map(c=>[c.id,true])));
-  const toggle = (id)=> setOpenCats(s=>({...s,[id]:!s[id]}));
-
-  const filtered = query.trim()
-    ? TOPICS.filter(t=>t.title.toLowerCase().includes(query.toLowerCase()))
-    : null;
-
+function IndexDrawer({onClose, onSelect}){
+  const [q, setQ] = useState("");
+  useEffect(()=>{
+    const onKey = (e)=>{ if(e.key==="Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return ()=>window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+  const filtered = TOPICS.filter(t=>t.title.toLowerCase().includes(q.toLowerCase()));
   return (
-    <aside className={"col-left" + (mobileOpen ? " open" : "")}>
-      <div className="side-search">
-        <div className="nav-search" style={{background:"#fff",border:"1px solid var(--line)",margin:"0 16px"}}>
-          <span style={{color:"var(--ink-soft)"}}><IconSearch/></span>
-          <input style={{color:"var(--ink)"}} placeholder="Search topics…" value={query} onChange={e=>setQuery(e.target.value)} />
+    <div className="drawer-backdrop" onClick={onClose}>
+      <div className="drawer" onClick={e=>e.stopPropagation()} role="dialog" aria-label="Full topic index">
+        <div className="drawer-head">
+          <h2>Full index</h2>
+          <button className="drawer-close" onClick={onClose} aria-label="Close index"><IconClose/></button>
         </div>
-      </div>
-      <button className="home-link" onClick={onHome}>⌂ Overview</button>
-
-      {filtered ? (
-        <ul className="topic-list">
-          {filtered.length===0 && <div style={{padding:"6px 20px",fontSize:13,color:"var(--ink-soft)"}}>No topics match "{query}".</div>}
-          {filtered.map(t=>(
-            <li className="topic-item" key={t.id}>
-              <button className={activeTopic && activeTopic.id===t.id ? "active":""} onClick={()=>onSelect(t)}>{t.title}</button>
-            </li>
-          ))}
-        </ul>
-      ) : CATEGORIES.map(cat=>(
-        <div className="cat-block" key={cat.id}>
-          <button className="cat-head" onClick={()=>toggle(cat.id)}>
-            <span className="cat-bearing">{cat.bearing}°</span>
-            {cat.label}
-            <IconChevron className={"cat-chevron" + (openCats[cat.id] ? " open":"")}/>
-          </button>
-          {openCats[cat.id] && (
-            <ul className="topic-list">
-              {TOPICS.filter(t=>t.cat===cat.id).map(t=>(
-                <li className="topic-item" key={t.id}>
-                  <button className={activeTopic && activeTopic.id===t.id ? "active":""} onClick={()=>onSelect(t)}>{t.title}</button>
-                </li>
+        <div className="drawer-search">
+          <IconSearch/>
+          <input autoFocus placeholder="Search all field notes…" value={q} onChange={e=>setQ(e.target.value)} />
+        </div>
+        {CATEGORIES.map(cat=>{
+          const items = filtered.filter(t=>t.cat===cat.id);
+          if(items.length===0) return null;
+          const Icon = CAT_ICON[cat.icon];
+          return (
+            <div className="drawer-group" key={cat.id}>
+              <div className="drawer-group-title"><Icon s={14}/> {cat.label}</div>
+              {items.map(t=>(
+                <button className="drawer-item" key={t.id} onClick={()=>{onSelect(t); onClose();}}>{t.no} — {t.title}</button>
               ))}
-            </ul>
-          )}
-        </div>
-      ))}
-    </aside>
-  );
-}
-
-/* ============================ RIGHT RAIL ============================ */
-
-function RightRail(){
-  return (
-    <aside className="col-right">
-      <div className="rail-note">
-        <b>Bearings</b> is free to read. No logins, no paywalls, no data collection. This space is reserved for advertising to keep it that way.
-      </div>
-      <div className="ad-slot" style={{minHeight:250}}>
-        <div className="ad-label">Advertisement</div>
-        <div className="ad-size">300 × 250</div>
-      </div>
-      <div className="ad-slot" style={{minHeight:180}}>
-        <div className="ad-label">Advertisement</div>
-        <div className="ad-size">300 × 180</div>
-      </div>
-      <div className="ad-slot" style={{minHeight:250}}>
-        <div className="ad-label">Advertisement</div>
-        <div className="ad-size">300 × 250</div>
-      </div>
-    </aside>
-  );
-}
-
-/* ============================ TOPIC PAGE ============================ */
-
-function TopicPage({topic}){
-  const cat = CATEGORIES.find(c=>c.id===topic.cat);
-  useEffect(()=>{ window.scrollTo({top:0,behavior:"instant"}); }, [topic.id]);
-  return (
-    <main className="col-main">
-      <div className="crumb"><b>{cat.label}</b> / {topic.title}</div>
-      <div className="eyebrow"><span className="dot"></span>Bearing {cat.bearing}° — {cat.label}</div>
-      <h1 className="page-title">{topic.title}</h1>
-      <p className="page-summary">{topic.summary}</p>
-
-      {topic.stats && (
-        <div className="stat-row">
-          {topic.stats.map((s,i)=>(
-            <div className="stat-card" key={i}>
-              <div className="val mono">{s.v}</div>
-              <div className="lbl">{s.l}</div>
             </div>
-          ))}
-        </div>
-      )}
-
-      <div className="dodont">
-        <div className="dd-card do">
-          <div className="dd-title">Do</div>
-          <ul>{topic.dos.map((d,i)=><li key={i}>{d}</li>)}</ul>
-        </div>
-        <div className="dd-card dont">
-          <div className="dd-title">Don't</div>
-          <ul>{topic.donts.map((d,i)=><li key={i}>{d}</li>)}</ul>
-        </div>
+          );
+        })}
+        {filtered.length===0 && <div style={{color:"var(--ink-soft)", fontSize:13.5}}>No field notes match "{q}".</div>}
       </div>
-
-      {topic.calculator && <Calculator type={topic.calculator} />}
-
-      <div className="body-copy">
-        {topic.body.map((b,i)=>(
-          <React.Fragment key={i}>
-            <h3>{b.h}</h3>
-            <p>{b.p}</p>
-          </React.Fragment>
-        ))}
-      </div>
-
-      <div className="disclaimer">
-        General information for educational purposes only — not personalized financial, legal, career or medical advice. Figures are illustrative. Always weigh your own circumstances, and consult a qualified professional for decisions specific to you.
-      </div>
-    </main>
+    </div>
   );
 }
 
-/* ============================ HOME PAGE ============================ */
+/* ============================ HOME ============================ */
 
-function HomePage({onSelectCategory}){
+function HomePage({onSelect, activeCat, setActiveCat}){
+  const shown = activeCat ? TOPICS.filter(t=>t.cat===activeCat) : TOPICS;
   return (
-    <main className="col-main">
+    <div className="shell">
       <div className="hero">
-        <div className="eyebrow" style={{color:"var(--brass-light)"}}><span className="dot" style={{background:"var(--brass-light)"}}></span>No logins. No cost. No noise.</div>
-        <h1>Get your bearings on career, money, and everyday life.</h1>
-        <p>Plain-language guidance on the decisions that quietly shape a life — what tends to work, what tends to backfire, and a few calculators to make the numbers concrete without ever leaving the page.</p>
-        <div className="hero-badges">
-          <span className="hero-badge">🧭 {TOPICS.length} topics</span>
-          <span className="hero-badge">🧮 4 built-in calculators</span>
-          <span className="hero-badge">🔓 Always free</span>
+        <div>
+          <div className="hero-eyebrow">No logins · No cost · No noise</div>
+          <h1>Field notes for a life you're building deliberately.</h1>
+          <p>Plain guidance on career, money, and habits — with the numbers made concrete by calculators built right into the page, and a visual system designed to work for every reader, including colorblind ones.</p>
+          <div className="hero-stats">
+            <div className="hero-stat"><div className="n">{TOPICS.length}</div><div className="l">Field notes</div></div>
+            <div className="hero-stat"><div className="n">4</div><div className="l">Instruments</div></div>
+            <div className="hero-stat"><div className="n">0</div><div className="l">Accounts needed</div></div>
+          </div>
         </div>
+        <div className="hero-visual"><HeroRings/></div>
       </div>
 
-      <h2 style={{fontSize:20,color:"var(--navy)",marginBottom:14}}>Choose a heading</h2>
-      <div className="cat-grid">
-        {CATEGORIES.map(cat=>(
-          <div className="cat-card" key={cat.id} onClick={()=>onSelectCategory(cat)}>
-            <div className="cat-card-top">
-              <span className="cat-card-title">{cat.label}</span>
-              <span className="cat-bearing">{cat.bearing}°</span>
-            </div>
-            <div className="cat-card-desc">{cat.desc}</div>
-            <div className="cat-card-count">{TOPICS.filter(t=>t.cat===cat.id).length} topics →</div>
-          </div>
-        ))}
+      <div className="grid-head">
+        <h2>Browse by heading</h2>
+        <span>{shown.length} of {TOPICS.length} notes shown</span>
       </div>
-    </main>
+      <div className="pillbar" style={{padding:"0 0 20px"}}>
+        <button className={"pill" + (!activeCat ? " active":"")} onClick={()=>setActiveCat(null)}>All</button>
+        {CATEGORIES.map(c=>{
+          const Icon = CAT_ICON[c.icon];
+          return <button key={c.id} className={"pill" + (activeCat===c.id ? " active":"")} onClick={()=>setActiveCat(c.id)}><Icon s={14}/>{c.label}</button>;
+        })}
+      </div>
+
+      <div className="topic-grid">
+        {shown.map(t=>{
+          const cat = CATEGORIES.find(c=>c.id===t.cat);
+          const Icon = CAT_ICON[cat.icon];
+          return (
+            <div className="topic-card" key={t.id} onClick={()=>onSelect(t)} tabIndex="0" role="button"
+              onKeyDown={e=>{if(e.key==="Enter") onSelect(t);}}>
+              <div className="topic-card-top">
+                <span className="cat-chip"><Icon s={12}/>{cat.label}</span>
+                <span className="field-note-no">No. {t.no}</span>
+              </div>
+              <h3>{t.title}</h3>
+              <p>{t.summary}</p>
+              <div className="topic-card-foot">Read field note <IconArrow/></div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/* ============================ TOPIC DETAIL ============================ */
+
+function TopicPage({topic, onHome, onSelect}){
+  const cat = CATEGORIES.find(c=>c.id===topic.cat);
+  const Icon = CAT_ICON[cat.icon];
+  const related = TOPICS.filter(t=>t.cat===topic.cat && t.id!==topic.id).slice(0,3);
+  useEffect(()=>{ window.scrollTo({top:0, behavior:"instant"}); }, [topic.id]);
+  return (
+    <div className="shell">
+      <div className="detail-shell">
+        <article>
+          <div className="crumb"><button onClick={onHome}>Index</button> / {cat.label} / {topic.title}</div>
+          <div className="fn-eyebrow"><Icon s={14}/> Field Note No. {topic.no} · {cat.label}</div>
+          <h1 className="article-title">{topic.title}</h1>
+          <p className="article-summary">{topic.summary}</p>
+
+          {topic.stats && (
+            <div className="stat-strip">
+              {topic.stats.map((s,i)=>(
+                <div className="stat-pill" key={i}>
+                  <div className="ico"><IconStat/></div>
+                  <div><div className="val mono">{s.v}</div><div className="lbl">{s.l}</div></div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className="dodont">
+            <div className="dd-card do">
+              <div className="dd-title"><span className="badge"><IconDoBadge/></span>Do</div>
+              <ul>{topic.dos.map((d,i)=><li key={i}><IconDoLi/>{d}</li>)}</ul>
+            </div>
+            <div className="dd-card dont">
+              <div className="dd-title"><span className="badge"><IconDontBadge/></span>Don't</div>
+              <ul>{topic.donts.map((d,i)=><li key={i}><IconDontLi/>{d}</li>)}</ul>
+            </div>
+          </div>
+
+          {topic.calculator && <Calculator type={topic.calculator} />}
+
+          <div className="body-copy">
+            {topic.body.map((b,i)=>(
+              <React.Fragment key={i}><h3>{b.h}</h3><p>{b.p}</p></React.Fragment>
+            ))}
+          </div>
+
+          <div className="disclaimer">General information for educational purposes only — not personalized financial, legal, or career advice. Figures are illustrative. Consult a qualified professional for decisions specific to you.</div>
+        </article>
+
+        <aside className="rail">
+          <div className="rail-card">
+            <h4>Related field notes</h4>
+            {related.map(t=>(
+              <a className="related-link" key={t.id} href="#" onClick={e=>{e.preventDefault(); onSelect(t);}}>{t.no} — {t.title}</a>
+            ))}
+          </div>
+          <div className="ad-slot" style={{minHeight:250}}><div className="ad-label">Advertisement</div><div className="ad-size">300 × 250</div></div>
+          <div className="ad-slot" style={{minHeight:180}}><div className="ad-label">Advertisement</div><div className="ad-size">300 × 180</div></div>
+        </aside>
+      </div>
+    </div>
   );
 }
 
@@ -1103,49 +816,52 @@ function HomePage({onSelectCategory}){
 
 function App(){
   const [activeTopic, setActiveTopic] = useState(null);
-  const [query, setQuery] = useState("");
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeCat, setActiveCat] = useState(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [q, setQ] = useState("");
 
-  const selectTopic = (t) => { setActiveTopic(t); setMobileOpen(false); };
-  const goHome = () => { setActiveTopic(null); setMobileOpen(false); };
-  const selectCategory = (cat) => {
-    const first = TOPICS.find(t=>t.cat===cat.id);
-    if(first) setActiveTopic(first);
-  };
+  const goHome = () => setActiveTopic(null);
+  const select = (t) => { setActiveTopic(t); };
 
   return (
     <React.Fragment>
       <nav className="topnav">
         <div className="topnav-inner">
-          <button className="hamburger" onClick={()=>setMobileOpen(o=>!o)}><IconMenu/></button>
-          <a className="brand" href="#" onClick={(e)=>{e.preventDefault();goHome();}}>
-            <span className="brand-mark"><CompassMark/></span>
+          <a className="brand" href="#" onClick={e=>{e.preventDefault(); goHome();}}>
+            <LogoMark/>
             <span>
-              <span className="brand-name">Bearings</span>
-              <span className="brand-tag">Life · Career · Money</span>
+              <span className="brand-name">Evergreen</span>
+              <span className="brand-tag">Career · Wealth · Habits</span>
             </span>
           </a>
           <div className="nav-search">
             <IconSearch/>
-            <input placeholder="Search topics… e.g. budgeting, negotiation" value={query} onChange={e=>setQuery(e.target.value)} />
+            <input placeholder="Search field notes…" value={q} onChange={e=>setQ(e.target.value)}
+              onKeyDown={e=>{
+                if(e.key==="Enter"){
+                  const hit = TOPICS.find(t=>t.title.toLowerCase().includes(q.toLowerCase()));
+                  if(hit) select(hit);
+                }
+              }}/>
           </div>
-          <div className="nav-links">
-            {CATEGORIES.map(c=>(
-              <button key={c.id} className={activeTopic && activeTopic.cat===c.id ? "active":""} onClick={()=>selectCategory(c)}>{c.label}</button>
-            ))}
-          </div>
+          <button className="index-btn" onClick={()=>setDrawerOpen(true)}><IconIndex/><span className="lbl">Full Index</span></button>
         </div>
       </nav>
 
-      <div className="shell">
-        <Sidebar activeTopic={activeTopic} onSelect={selectTopic} onHome={goHome} query={query} setQuery={setQuery} mobileOpen={mobileOpen}/>
-        {activeTopic ? <TopicPage topic={activeTopic}/> : <HomePage onSelectCategory={selectCategory}/>}
-        <RightRail/>
-        <footer>
-          <b>Bearings</b> — general knowledge, shared freely. No accounts, no tracking logins, no fees.<br/>
-          Educational content only, not professional advice. © {new Date().getFullYear()} Bearings.
-        </footer>
-      </div>
+      {activeTopic
+        ? <TopicPage topic={activeTopic} onHome={goHome} onSelect={select}/>
+        : <HomePage onSelect={select} activeCat={activeCat} setActiveCat={setActiveCat}/>
+      }
+
+      {drawerOpen && <IndexDrawer onClose={()=>setDrawerOpen(false)} onSelect={select}/>}
+
+      <footer>
+        <div className="a11y-note">
+          Built with a colorblind-safe palette (Okabe–Ito blue/vermillion) and redundant coding — every signal pairs a color with a distinct shape, icon and label, so meaning never depends on color alone.
+        </div>
+        <b>Evergreen</b> — general knowledge, shared freely. No accounts, no tracking logins, no fees.<br/>
+        Educational content only, not professional advice. © {new Date().getFullYear()} Evergreen.
+      </footer>
     </React.Fragment>
   );
 }
